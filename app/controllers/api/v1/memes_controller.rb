@@ -1,11 +1,16 @@
 class Api::V1::MemesController < ApplicationController
 
   def index
-    @memes = Meme.all
-    render json: @memes
+    if params[:page]
+      @memes = Meme.paginate(:page => params[:page], :per_page => 20)
+    else
+      @memes = Meme.all
+    end
+      render json: @memes
   end
 
   def show
+    # byebug
     @meme = Meme.find(params[:id])
     render json: @meme
   end
